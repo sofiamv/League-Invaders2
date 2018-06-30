@@ -117,6 +117,9 @@ aaaa.update();
 				currentState = MENU_STATE;
 			}
 		}
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			aaaa.update(0);
+		}
 	}
 
 	@Override
