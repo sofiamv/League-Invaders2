@@ -17,8 +17,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int currentState = MENU_STATE;
 	Font titleFont;
 	Font textFont;
+	Graphics graphic;
 	Rocketship aaaa = new Rocketship(250, 700, 50, 50);
-
+	ObjectManager objectm = new ObjectManager(aaaa);
+	int 	projectileposition = aaaa.x + 20;
 	// GameObject aaa;
 	GamePanel(){
 		aa = new Timer(1000 / 60, this);
@@ -32,7 +34,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void updateGameState() {
-aaaa.update();
+objectm.update();
+objectm.ManageEnemies();
 	}
 
 	public void updateEndState() {
@@ -53,7 +56,7 @@ aaaa.update();
 	public void drawGamestate(Graphics b) {
 		b.setColor(Color.BLACK);
 		b.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-		aaaa.draw(b);
+		objectm.draw(b);
 	}
 
 	public void drawEndstate(Graphics c) {
@@ -74,7 +77,6 @@ aaaa.update();
 	@Override
 
 	public void paintComponent(Graphics g) {
-		System.out.println(currentState);
 		// aaa.draw(g);
 		if (currentState == MENU_STATE) {
 			drawMenustate(g);
@@ -91,6 +93,7 @@ aaaa.update();
 		// TODO Auto-generated method stub
 		if (currentState == MENU_STATE) {
 			updateMenuState();
+			
 		} else if (currentState == GAME_STATE) {
 			updateGameState();
 		} else if (currentState == END_STATE) {
@@ -116,9 +119,23 @@ aaaa.update();
 			if (currentState > END_STATE) {
 				currentState = MENU_STATE;
 			}
+		
+		}
+		if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+			aaaa.update("left");
 		}
 		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			aaaa.update(0);
+			aaaa.update("right");
+		}
+		if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+		aaaa.update("down");
+		}
+		if(e.getKeyCode()==KeyEvent.VK_UP) {
+		aaaa.update("up");
+		}
+		if(e.getKeyCode()==KeyEvent.VK_SPACE){
+			objectm.addProjectile(new Projectile(projectileposition, aaaa.y, 10, 10));
+			
 		}
 	}
 
@@ -126,5 +143,7 @@ aaaa.update();
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 	//	System.out.println("Have a good day!");
+
 	}
 }
+
