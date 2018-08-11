@@ -5,13 +5,14 @@ public class Rocketship extends GameObject {
 int speed;
 	Rocketship(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		speed = 50;
+		speed = 10;
 	}
 public void draw(Graphics g) {
 g.setColor(Color.BLUE);	
 g.fillRect(x, y, width, height);
 }
 public void update(String move) {
+	super.update();
 	if(move.equals("right")) {
 		x+=speed;
 	}if(move.equals("left")) {

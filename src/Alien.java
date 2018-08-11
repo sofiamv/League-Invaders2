@@ -6,7 +6,8 @@ public class Alien extends GameObject {
 		super(x, y, width, height);
 	}
 	public void update() {
-		y+=4;
+		y+=4
+		super.update();;
 	}
 	public void draw(Graphics g) {
 		g.setColor(Color.YELLOW);

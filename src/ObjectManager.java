@@ -56,6 +56,17 @@ public void purgeObjects() {
 			}
 	}
 		}
+public void checkCollision() {
+	for(Alien a : alienList){
+
+        if(rocket.collisionBox.intersects(a.collisionBox){
+
+                rocket.isAlive = false;
+
+        }
+
+}
+}
 
 
 }
