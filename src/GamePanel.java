@@ -96,6 +96,8 @@ objectm.ManageEnemies();
 			
 		} else if (currentState == GAME_STATE) {
 			updateGameState();
+			objectm.checkCollision();
+			objectm.purgeObjects();
 		} else if (currentState == END_STATE) {
 			updateEndState();
 		}
@@ -134,7 +136,7 @@ objectm.ManageEnemies();
 		aaaa.update("up");
 		}
 		if(e.getKeyCode()==KeyEvent.VK_SPACE){
-			objectm.addProjectile(new Projectile(projectileposition, aaaa.y, 10, 10));
+			objectm.addProjectile(new Projectile(aaaa.x, aaaa.y, 10, 10));
 			
 		}
 	}

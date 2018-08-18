@@ -49,25 +49,41 @@ enemyTimer = System.currentTimeMillis();
 public void purgeObjects() {
 	for(int i = 0; i < AlienObjects.size(); i++) {
 		if(AlienObjects.get(i).y < 0) {
-			AlienObjects.remove(AlienObjects.get(i));
-		}	
+			AlienObjects.remove(AlienObjects.get(i));}}
+		for(int i = 0; i < AlienObjects.size(); i++) {
+		if(AlienObjects.get(i).isAlive==false) {
+			AlienObjects.remove(i);
+		}	}
+	
+		for(int i = 0; i < ProjectileObjects.size(); i++) {
 			if(ProjectileObjects.get(i).y < 0) {
-				ProjectileObjects.remove(ProjectileObjects.get(i));
-			}
-	}
+				ProjectileObjects.remove(ProjectileObjects.get(i));}
 		}
+		for(int i = 0; i < ProjectileObjects.size(); i++) {
+			if(ProjectileObjects.get(i).isAlive==false) {
+				ProjectileObjects.remove(ProjectileObjects.get(i));
+			}}
+		}
+		
 public void checkCollision() {
-	for(Alien a : alienList){
-
-        if(rocket.collisionBox.intersects(a.collisionBox){
-
+	for(Alien a : AlienObjects){
+        if(rocket.collisionbox.intersects(a.collisionbox)){
                 rocket.isAlive = false;
 
         }
+        for(int i = 0; i < AlienObjects.size(); i++) {
+        	for(int i1 = 0; i1 < ProjectileObjects.size(); i1 ++) {
+        		if(AlienObjects.get(i).collisionbox.intersects(ProjectileObjects.get(i1).collisionbox)) {
+        			AlienObjects.get(i).isAlive = false;
+        			ProjectileObjects.get(i1).isAlive = false;
+        			
+        		}
+        	}
+        }
+     
 
 }
 }
-
 
 }
 

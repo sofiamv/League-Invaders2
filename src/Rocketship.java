@@ -3,6 +3,7 @@ import java.awt.Graphics;
 
 public class Rocketship extends GameObject {
 int speed;
+boolean isAlive = true;
 	Rocketship(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		speed = 10;
@@ -12,6 +13,7 @@ g.setColor(Color.BLUE);
 g.fillRect(x, y, width, height);
 }
 public void update(String move) {
+super.update();
 	super.update();
 	if(move.equals("right")) {
 		x+=speed;
