@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -15,14 +18,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
 	int currentState = MENU_STATE;
+	public static BufferedImage alienImg;
+    public static BufferedImage rocketImg;
+    public static BufferedImage bulletImg;
+    public static BufferedImage spaceImg;
 	Font titleFont;
 	Font textFont;
 	Graphics graphic;
 	Rocketship aaaa = new Rocketship(250, 700, 50, 50);
 	ObjectManager objectm = new ObjectManager(aaaa);
-	int 	projectileposition = aaaa.x + 20;
+	int projectileposition = aaaa.x + 20;
+
 	// GameObject aaa;
-	GamePanel(){
+	GamePanel() {
+		  try {
+              alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png"));
+              rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png"));
+              bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png"));
+              spaceImg = ImageIO.read(this.getClass().getResourceAsStream("space.png"));
+      } catch (IOException e) {
+
+              // TODO Auto-generated catch block
+
+              e.printStackTrace();
+
+      }
 		aa = new Timer(1000 / 60, this);
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		textFont = new Font("Arial", Font.PLAIN, 30);
@@ -34,8 +54,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void updateGameState() {
-objectm.update();
-objectm.ManageEnemies();
+		objectm.update();
+		objectm.ManageEnemies();
+		objectm.checkCollision();
+		objectm.purgeObjects();
+		if (objectm.rocket.isAlive == false) {
+			currentState = END_STATE;
+		}
+		
 	}
 
 	public void updateEndState() {
@@ -54,8 +80,7 @@ objectm.ManageEnemies();
 	}
 
 	public void drawGamestate(Graphics b) {
-		b.setColor(Color.BLACK);
-		b.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
+		b.drawImage(GamePanel.spaceImg, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
 		objectm.draw(b);
 	}
 
@@ -66,7 +91,7 @@ objectm.ManageEnemies();
 		c.setFont(titleFont);
 		c.drawString("Game Over!", 75, 100);
 		c.setFont(textFont);
-		c.drawString("You killed _ enemies", 75, 400);
+		c.drawString("You killed " + objectm.getScore() + " enemies", 75, 400);
 		c.drawString("Press ENTER to restart", 50, 600);
 	}
 
@@ -93,7 +118,7 @@ objectm.ManageEnemies();
 		// TODO Auto-generated method stub
 		if (currentState == MENU_STATE) {
 			updateMenuState();
-			
+
 		} else if (currentState == GAME_STATE) {
 			updateGameState();
 			objectm.checkCollision();
@@ -108,44 +133,49 @@ objectm.ManageEnemies();
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
-	///	System.out.println("Hello");
+
+		/// System.out.println("Hello");
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		//System.out.println("What's up?");
+		// System.out.println("What's up?");
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			currentState++;
 			if (currentState > END_STATE) {
 				currentState = MENU_STATE;
 			}
-		
+			if (currentState == MENU_STATE) {
+				aaaa = new Rocketship(aaaa.x, aaaa.y, aaaa.width, aaaa.height);
+				objectm = new ObjectManager(aaaa);
+				}		
+
 		}
-		if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			aaaa.update("left");
 		}
-		if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			aaaa.update("right");
 		}
-		if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-		aaaa.update("down");
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			aaaa.update("down");
 		}
-		if(e.getKeyCode()==KeyEvent.VK_UP) {
-		aaaa.update("up");
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			aaaa.update("up");
 		}
-		if(e.getKeyCode()==KeyEvent.VK_SPACE){
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			objectm.addProjectile(new Projectile(aaaa.x, aaaa.y, 10, 10));
-			
+
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-	//	System.out.println("Have a good day!");
+		// System.out.println("Have a good day!");
 
 	}
 }
+
 

@@ -8,9 +8,15 @@ public class ObjectManager {
 	Rocketship rocket;
 	long enemyTimer = 0;
 	int enemySpawnTime = 1000;
+	int score = 0;
+
+
 
 	ObjectManager(Rocketship rocket) {
 		this.rocket = rocket;
+	}
+	public int getScore(){
+		return score;
 	}
 
 	public void update() {
@@ -62,9 +68,6 @@ public class ObjectManager {
 				AlienObjects.remove(i);
 			}
 		}
-		if(rocket.isAlive==false) {
-			currentState == END_STATE;
-		}
 
 		for (int i = 0; i < ProjectileObjects.size(); i++) {
 			if (ProjectileObjects.get(i).y < 0) {
@@ -89,6 +92,8 @@ public class ObjectManager {
 					if (AlienObjects.get(i).collisionbox.intersects(ProjectileObjects.get(i1).collisionbox)) {
 						AlienObjects.get(i).isAlive = false;
 						ProjectileObjects.get(i1).isAlive = false;
+						score++;
+						
 
 					}
 				}
